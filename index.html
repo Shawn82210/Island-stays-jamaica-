@@ -1,0 +1,849 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IslandStays Jamaica | Direct Bookings & Boutique Villa Rentals</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter & Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        jamaica: {
+                            emerald: '#065F46', // Deep elegant emerald
+                            mint: '#D1FAE5',
+                            sand: '#FDFBF7',   // Soft warm neutral
+                            gold: '#D97706',   // Elegant gold accent
+                            goldlight: '#FEF3C7',
+                            dark: '#0F172A',
+                            slate: '#475569'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FDFBF7;
+            font-family: 'Inter', sans-serif;
+        }
+        .font-heading {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- Announcement Bar -->
+    <div class="bg-jamaica-emerald text-white text-xs sm:text-sm py-2 px-4 text-center font-medium flex items-center justify-center gap-2">
+        <span class="bg-jamaica-gold text-white px-2 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-wider">Direct Deals</span>
+        <span>Book Jamaican Villas Directly from Hosts — 0% Guest Service Fees!</span>
+    </div>
+
+    <!-- Navigation Header -->
+    <nav class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <!-- Custom SVG Logo: Palm tree arching over villa roof -->
+                <svg class="h-11 w-auto transition-transform group-hover:scale-105" viewBox="0 0 240 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Palm Tree & Villa Icon -->
+                    <g id="logo-icon">
+                        <!-- Palm Leaves -->
+                        <path d="M35 8C28 8 20 12 16 18C22 17 28 18 33 21C27 21 20 25 18 31C24 28 30 28 35 30C30 32 25 37 25 43C31 38 37 36 42 37" stroke="#065F46" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <!-- Trunk arching over roof -->
+                        <path d="M36 30C38 22 43 14 52 10C63 5 75 8 82 16C88 23 88 32 83 38" stroke="#065F46" stroke-width="3" stroke-linecap="round"/>
+                        <!-- Villa Roof -->
+                        <path d="M48 38L62 26L76 38" stroke="#065F46" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <!-- Roof Inner Accent / Chimney -->
+                        <path d="M70 29V23H73V32" stroke="#065F46" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M54 38L62 31L70 38" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
+                        <!-- Window -->
+                        <rect x="59" y="34" width="6" height="6" rx="1" fill="#065F46"/>
+                        <!-- Wave Base -->
+                        <path d="M38 42C48 39 60 41 72 43C80 44 86 42 90 40" stroke="#D97706" stroke-width="2.5" stroke-linecap="round"/>
+                    </g>
+                    <!-- Brand Typography -->
+                    <text x="96" y="32" font-family="'Montserrat', sans-serif" font-weight="800" font-size="17" fill="#065F46" letter-spacing="0.5">ISLANDSTAYS</text>
+                    <text x="96" y="46" font-family="'Montserrat', sans-serif" font-weight="700" font-size="12" fill="#D97706" letter-spacing="3.5">JAMAICA</text>
+                </svg>
+            </a>
+
+            <!-- Navigation Actions -->
+            <div class="flex items-center gap-3 sm:gap-4">
+                <!-- Currency Toggle -->
+                <button onclick="toggleCurrency()" id="currency-toggle-btn" class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-coins text-jamaica-gold"></i>
+                    <span id="currency-label">USD ($)</span>
+                </button>
+
+                <!-- Host Onboarding CTA -->
+                <button onclick="openHostModal()" class="px-4 py-2.5 rounded-xl bg-jamaica-emerald hover:bg-emerald-800 text-white font-semibold text-xs sm:text-sm transition flex items-center gap-2 shadow-sm shadow-jamaica-emerald/30">
+                    <i class="fa-solid fa-house-chimney-user text-jamaica-goldlight"></i>
+                    <span>List Your Villa</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative py-12 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-jamaica-emerald rounded-3xl p-8 sm:p-14 text-white relative overflow-hidden shadow-xl">
+            <!-- Background Accent Visual -->
+            <div class="absolute inset-0 opacity-20 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="relative z-10 max-w-2xl">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-jamaica-goldlight text-xs font-semibold mb-4">
+                    <i class="fa-solid fa-location-dot"></i> Verified Local Hosts Across Jamaica
+                </span>
+                <h1 class="font-heading text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight mb-4">
+                    Authentic Luxury Villas & Beachfront Stays
+                </h1>
+                <p class="text-slate-200 text-sm sm:text-base leading-relaxed mb-8">
+                    Discover private villas, beach cottages, and mountain retreats. Connect directly with verified hosts via WhatsApp with no added OTA markups.
+                </p>
+
+                <!-- Region Quick Filter Tabs -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-2 hide-scrollbar">
+                    <button onclick="filterRegion('All')" class="region-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-jamaica-gold text-white shadow-sm" data-region="All">
+                        All Parishes
+                    </button>
+                    <button onclick="filterRegion('Portland')" class="region-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-white/10 hover:bg-white/20 text-white" data-region="Portland">
+                        Portland
+                    </button>
+                    <button onclick="filterRegion('Ocho Rios')" class="region-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-white/10 hover:bg-white/20 text-white" data-region="Ocho Rios">
+                        Ocho Rios
+                    </button>
+                    <button onclick="filterRegion('Negril')" class="region-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-white/10 hover:bg-white/20 text-white" data-region="Negril">
+                        Negril
+                    </button>
+                    <button onclick="filterRegion('Kingston')" class="region-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-white/10 hover:bg-white/20 text-white" data-region="Kingston">
+                        Kingston
+                    </button>
+                    <button onclick="filterRegion('Treasure Beach')" class="region-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-white/10 hover:bg-white/20 text-white" data-region="Treasure Beach">
+                        Treasure Beach
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Villa Marketplace Catalog -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 flex-grow w-full">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+            <div>
+                <h2 class="font-heading text-2xl sm:text-3xl font-bold text-slate-900">Featured Jamaican Stays</h2>
+                <p class="text-slate-500 text-xs sm:text-sm mt-1" id="catalog-count-label">Showing all verified properties</p>
+            </div>
+            
+            <!-- Quick Feature Filter Pills -->
+            <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 hide-scrollbar text-xs">
+                <button onclick="toggleAmenityFilter('pool')" id="btn-filter-pool" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:border-jamaica-emerald transition font-medium flex items-center gap-1.5">
+                    <i class="fa-solid fa-water-ladder text-jamaica-emerald"></i> Private Pool
+                </button>
+                <button onclick="toggleAmenityFilter('ocean')" id="btn-filter-ocean" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:border-jamaica-emerald transition font-medium flex items-center gap-1.5">
+                    <i class="fa-solid fa-water text-blue-500"></i> Ocean View
+                </button>
+                <button onclick="toggleAmenityFilter('chef')" id="btn-filter-chef" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:border-jamaica-emerald transition font-medium flex items-center gap-1.5">
+                    <i class="fa-solid fa-utensils text-jamaica-gold"></i> Chef Included
+                </button>
+            </div>
+        </div>
+
+        <!-- Villa Grid Container -->
+        <div id="villa-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Dynamically Populated via JavaScript -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white pt-12 pb-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-8 h-8 rounded-lg bg-jamaica-emerald text-white flex items-center justify-center text-base font-bold">
+                        <i class="fa-solid fa-palmtree"></i>
+                    </div>
+                    <span class="font-heading font-extrabold text-lg">IslandStays Jamaica</span>
+                </div>
+                <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-4">
+                    Jamaica's premier direct-booking villa network. Connecting guests directly with authentic property hosts across all 14 parishes.
+                </p>
+                <div class="flex items-center gap-3 text-slate-400">
+                    <a href="#" class="hover:text-jamaica-gold transition"><i class="fa-brands fa-instagram text-lg"></i></a>
+                    <a href="#" class="hover:text-jamaica-gold transition"><i class="fa-brands fa-facebook text-lg"></i></a>
+                    <a href="#" class="hover:text-jamaica-gold transition"><i class="fa-brands fa-whatsapp text-lg"></i></a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="font-heading text-sm font-bold uppercase tracking-wider text-slate-300 mb-3">Accepted Payments</h4>
+                <p class="text-slate-400 text-xs mb-3">Direct host settlements supported via:</p>
+                <div class="flex flex-wrap gap-2 text-xs">
+                    <span class="px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300">WiPay</span>
+                    <span class="px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300">Lynk App</span>
+                    <span class="px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300">NCB / Scotiabank</span>
+                    <span class="px-2.5 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300">Visa / MasterCard</span>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="font-heading text-sm font-bold uppercase tracking-wider text-slate-300 mb-3">Host Registration</h4>
+                <p class="text-slate-400 text-xs leading-relaxed mb-3">Are you a villa owner or Airbnb host in Jamaica? List your stay with zero commission options.</p>
+                <button onclick="openHostModal()" class="px-4 py-2 rounded-xl bg-jamaica-gold hover:bg-amber-600 text-white font-bold text-xs transition">
+                    Choose Your Host Plan
+                </button>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-slate-800 text-center text-xs text-slate-500">
+            <p>© 2026 IslandStays Jamaica Platform. GitHub Pages Ready Single-File Template.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: Villa Multi-Photo Gallery Carousel Modal -->
+    <div id="gallery-modal" class="fixed inset-0 z-50 bg-slate-900/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl relative flex flex-col max-h-[90vh]">
+            <!-- Gallery Header -->
+            <div class="p-4 sm:p-6 border-b border-slate-100 flex items-center justify-between">
+                <div>
+                    <h3 id="gallery-title" class="font-heading font-bold text-lg sm:text-xl text-slate-900">Villa Gallery</h3>
+                    <p id="gallery-location" class="text-xs text-slate-500"></p>
+                </div>
+                <button onclick="closeGalleryModal()" class="w-9 h-9 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Carousel Display -->
+            <div class="relative bg-slate-950 flex-grow flex items-center justify-center min-h-[300px] sm:min-h-[450px]">
+                <img id="gallery-active-img" src="" alt="Villa Photo" class="max-h-[60vh] w-full object-contain">
+                
+                <!-- Prev/Next Buttons -->
+                <button onclick="prevGalleryImage()" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-slate-800 flex items-center justify-center shadow-md transition">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button onclick="nextGalleryImage()" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-slate-800 flex items-center justify-center shadow-md transition">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+
+                <!-- Photo Counter Indicator -->
+                <div class="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">
+                    <span id="gallery-counter">1 / 3</span>
+                </div>
+            </div>
+
+            <!-- Thumbnail Selector Bar -->
+            <div id="gallery-thumbnails" class="p-4 bg-slate-50 flex items-center gap-3 overflow-x-auto border-t border-slate-200">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Guest Direct Booking Engine (WhatsApp) -->
+    <div id="booking-modal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl relative flex flex-col max-h-[90vh]">
+            <div class="p-5 bg-jamaica-emerald text-white flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] font-bold text-jamaica-goldlight uppercase tracking-widest">Direct Guest Reservation</span>
+                    <h3 id="booking-modal-title" class="font-heading font-bold text-lg sm:text-xl">Book Villa</h3>
+                </div>
+                <button onclick="closeBookingModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-4 text-sm">
+                <!-- Selected Villa Summary Box -->
+                <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200/80 flex items-center gap-3">
+                    <img id="booking-thumb" src="" alt="Thumbnail" class="w-16 h-16 rounded-xl object-cover">
+                    <div>
+                        <h4 id="booking-villa-name" class="font-bold text-slate-900"></h4>
+                        <p id="booking-villa-rate" class="text-xs text-jamaica-emerald font-semibold"></p>
+                    </div>
+                </div>
+
+                <!-- Date & Guest Controls -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Check-In Date</label>
+                        <input type="date" id="book-checkin" onchange="calculateBookingTotal()" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-medium focus:ring-2 focus:ring-jamaica-emerald focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Check-Out Date</label>
+                        <input type="date" id="book-checkout" onchange="calculateBookingTotal()" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-medium focus:ring-2 focus:ring-jamaica-emerald focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Number of Guests</label>
+                    <select id="book-guests" onchange="calculateBookingTotal()" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-medium focus:ring-2 focus:ring-jamaica-emerald focus:outline-none">
+                        <option value="1">1 Guest</option>
+                        <option value="2" selected>2 Guests</option>
+                        <option value="4">4 Guests</option>
+                        <option value="6">6 Guests</option>
+                        <option value="8">8+ Guests</option>
+                    </select>
+                </div>
+
+                <!-- Pricing Summary Box -->
+                <div class="p-4 bg-jamaica-goldlight/40 rounded-2xl border border-jamaica-gold/20 space-y-2">
+                    <div class="flex justify-between text-xs text-slate-600">
+                        <span id="calc-nights-label">1 Night Stay</span>
+                        <span id="calc-base-price">$0</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-slate-600">
+                        <span>Cleaning & Maintenance Fee</span>
+                        <span id="calc-cleaning-fee">$0</span>
+                    </div>
+                    <div class="pt-2 border-t border-jamaica-gold/30 flex justify-between font-bold text-slate-900 text-sm">
+                        <span>Total Payable to Host</span>
+                        <span id="calc-total-price" class="text-jamaica-emerald text-base">$0</span>
+                    </div>
+                </div>
+
+                <!-- Submit WhatsApp Action -->
+                <button onclick="confirmBookingWhatsApp()" class="w-full py-3.5 px-4 bg-jamaica-emerald hover:bg-emerald-800 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-jamaica-emerald/20">
+                    <i class="fa-brands fa-whatsapp text-xl text-emerald-300"></i>
+                    <span>Contact Host on WhatsApp</span>
+                </button>
+                <p class="text-[11px] text-slate-400 text-center">Opens a pre-filled WhatsApp message directly to the verified property host.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Interactive Host Onboarding & Tier Selection ("List Your Villa") -->
+    <div id="host-modal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl relative flex flex-col max-h-[92vh]">
+            <!-- Modal Header -->
+            <div class="p-6 bg-slate-900 text-white flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] font-bold text-jamaica-gold uppercase tracking-widest">Host Partner Network</span>
+                    <h3 class="font-heading font-bold text-xl">List Your Jamaican Villa</h3>
+                </div>
+                <button onclick="closeHostModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Form Content -->
+            <div class="p-6 overflow-y-auto space-y-6 text-sm">
+                
+                <!-- STEP 1: Plan Tier Selection -->
+                <div>
+                    <label class="block font-heading font-bold text-slate-900 text-sm mb-3">
+                        1. Choose Your Preferred Business Plan Tier
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        
+                        <!-- Tier A: Commission -->
+                        <div onclick="selectHostTier('commission')" id="tier-card-commission" class="tier-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer hover:border-jamaica-emerald transition bg-slate-50 relative">
+                            <input type="radio" name="host-tier" value="Commission (8%)" id="tier-radio-commission" class="hidden">
+                            <span class="text-[10px] font-bold uppercase text-slate-500 block">Performance</span>
+                            <h4 class="font-bold text-slate-900 text-sm mt-0.5">8% Commission</h4>
+                            <p class="text-xs text-jamaica-emerald font-bold mt-1">Pay-Per-Booking</p>
+                            <p class="text-[11px] text-slate-500 mt-2 leading-tight">No upfront monthly fees. Pay only when guests book.</p>
+                        </div>
+
+                        <!-- Tier B: Flat Rate Subscription -->
+                        <div onclick="selectHostTier('subscription')" id="tier-card-subscription" class="tier-card border-2 border-jamaica-emerald bg-jamaica-mint/30 rounded-2xl p-4 cursor-pointer hover:border-jamaica-emerald transition relative">
+                            <input type="radio" name="host-tier" value="Flat Rate (J$7,500/mo)" id="tier-radio-subscription" class="hidden" checked>
+                            <span class="text-[10px] font-bold uppercase text-jamaica-gold block">Most Popular</span>
+                            <h4 class="font-bold text-slate-900 text-sm mt-0.5">Flat Subscription</h4>
+                            <p class="text-xs text-jamaica-emerald font-bold mt-1">J$7,500 / month</p>
+                            <p class="text-[11px] text-slate-500 mt-2 leading-tight">0% commission on all your direct bookings.</p>
+                        </div>
+
+                        <!-- Tier C: Premium Lead Generator -->
+                        <div onclick="selectHostTier('lead')" id="tier-card-lead" class="tier-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer hover:border-jamaica-emerald transition bg-slate-50 relative">
+                            <input type="radio" name="host-tier" value="Lead Generator (J$12,000/mo)" id="tier-radio-lead" class="hidden">
+                            <span class="text-[10px] font-bold uppercase text-slate-500 block">Featured</span>
+                            <h4 class="font-bold text-slate-900 text-sm mt-0.5">Lead Generator</h4>
+                            <p class="text-xs text-jamaica-emerald font-bold mt-1">J$12,000 / month</p>
+                            <p class="text-[11px] text-slate-500 mt-2 leading-tight">Featured placement + direct WhatsApp lead routing.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Property & Host Details -->
+                <div class="space-y-4 pt-2 border-t border-slate-100">
+                    <label class="block font-heading font-bold text-slate-900 text-sm">
+                        2. Property & Host Information
+                    </label>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Host Name</label>
+                            <input type="text" id="host-name-input" placeholder="e.g. Marcus Campbell" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-medium focus:ring-2 focus:ring-jamaica-emerald focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">WhatsApp Phone Number</label>
+                            <input type="tel" id="host-phone-input" placeholder="e.g. 18765550199" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-medium focus:ring-2 focus:ring-jamaica-emerald focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Villa / Property Name</label>
+                            <input type="text" id="host-villa-input" placeholder="e.g. Blue Lagoon Haven" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-medium focus:ring-2 focus:ring-jamaica-emerald focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Parish / Location</label>
+                            <select id="host-location-input" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-medium focus:ring-2 focus:ring-jamaica-emerald focus:outline-none">
+                                <option value="Portland">Portland</option>
+                                <option value="Ocho Rios">Ocho Rios</option>
+                                <option value="Negril">Negril</option>
+                                <option value="Kingston">Kingston</option>
+                                <option value="Treasure Beach">Treasure Beach</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: Villa Photos Input -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Photo Image Link(s) / Google Drive / Airbnb Link</label>
+                        <input type="text" id="host-photos-input" placeholder="Paste link to photos or Airbnb listing..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-medium focus:ring-2 focus:ring-jamaica-emerald focus:outline-none">
+                        <p class="text-[11px] text-slate-400 mt-1">Our onboarding team will format your photos for high scannability.</p>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button onclick="submitHostForm()" class="w-full py-3.5 px-4 bg-jamaica-gold hover:bg-amber-600 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-jamaica-gold/20">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Submit Listing Request</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+        // Sample Curated Jamaican Villa Data
+        const villaData = [
+            {
+                id: "villa-1",
+                name: "Blue Lagoon Cove Villa",
+                region: "Portland",
+                rateUSD: 280,
+                rateJMD: 43500,
+                capacity: 6,
+                bedrooms: 3,
+                baths: 3,
+                images: [
+                    "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80"
+                ],
+                amenities: ["ocean", "pool", "chef"],
+                hostPhone: "18765550199",
+                tag: "Boutique Oceanfront"
+            },
+            {
+                id: "villa-2",
+                name: "Ocho Rios Palms & Pool Suite",
+                region: "Ocho Rios",
+                rateUSD: 190,
+                rateJMD: 29500,
+                capacity: 4,
+                bedrooms: 2,
+                baths: 2,
+                images: [
+                    "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=800&q=80"
+                ],
+                amenities: ["pool"],
+                hostPhone: "18765550188",
+                tag: "Gated Resort"
+            },
+            {
+                id: "villa-3",
+                name: "Negril Cliffs Sunset Cottage",
+                region: "Negril",
+                rateUSD: 220,
+                rateJMD: 34000,
+                capacity: 2,
+                bedrooms: 1,
+                baths: 1,
+                images: [
+                    "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80"
+                ],
+                amenities: ["ocean"],
+                hostPhone: "18765550177",
+                tag: "Cliffside Views"
+            },
+            {
+                id: "villa-4",
+                name: "Irish Town Mountain Haven",
+                region: "Kingston",
+                rateUSD: 160,
+                rateJMD: 25000,
+                capacity: 4,
+                bedrooms: 2,
+                baths: 2,
+                images: [
+                    "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80"
+                ],
+                amenities: ["chef"],
+                hostPhone: "18765550166",
+                tag: "Cool Mountain Breeze"
+            },
+            {
+                id: "villa-5",
+                name: "Treasure Beach Driftwood Villa",
+                region: "Treasure Beach",
+                rateUSD: 310,
+                rateJMD: 48000,
+                capacity: 8,
+                bedrooms: 4,
+                baths: 4,
+                images: [
+                    "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+                ],
+                amenities: ["ocean", "pool", "chef"],
+                hostPhone: "18765550155",
+                tag: "Private Beach Access"
+            }
+        ];
+
+        // App State Variables
+        let currentCurrency = 'USD'; // 'USD' or 'JMD'
+        let activeRegion = 'All';
+        let activeAmenityFilters = [];
+        let activeGalleryImages = [];
+        let activeGalleryIndex = 0;
+        let selectedVillaForBooking = null;
+        let selectedHostTierPlan = 'Flat Rate (J$7,500/mo)';
+
+        // Toggle Currency Function
+        function toggleCurrency() {
+            currentCurrency = currentCurrency === 'USD' ? 'JMD' : 'USD';
+            document.getElementById('currency-label').innerText = currentCurrency === 'USD' ? 'USD ($)' : 'JMD ($J)';
+            renderMarketplace();
+        }
+
+        // Filter by Region
+        function filterRegion(region) {
+            activeRegion = region;
+            
+            // Update Tab Button Styles
+            document.querySelectorAll('.region-filter-btn').forEach(btn => {
+                if (btn.getAttribute('data-region') === region) {
+                    btn.className = "region-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-jamaica-gold text-white shadow-sm";
+                } else {
+                    btn.className = "region-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-white/10 hover:bg-white/20 text-white";
+                }
+            });
+
+            renderMarketplace();
+        }
+
+        // Toggle Amenity Filter
+        function toggleAmenityFilter(amenity) {
+            const btn = document.getElementById(`btn-filter-${amenity}`);
+            if (activeAmenityFilters.includes(amenity)) {
+                activeAmenityFilters = activeAmenityFilters.filter(a => a !== amenity);
+                btn.className = "px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:border-jamaica-emerald transition font-medium flex items-center gap-1.5";
+            } else {
+                activeAmenityFilters.push(amenity);
+                btn.className = "px-3 py-1.5 rounded-lg border border-jamaica-emerald bg-jamaica-mint/40 text-jamaica-emerald font-semibold transition flex items-center gap-1.5";
+            }
+            renderMarketplace();
+        }
+
+        // Render Villa Marketplace
+        function renderMarketplace() {
+            const grid = document.getElementById('villa-grid');
+            grid.innerHTML = '';
+
+            let filtered = villaData.filter(v => {
+                const matchesRegion = activeRegion === 'All' || v.region === activeRegion;
+                const matchesAmenities = activeAmenityFilters.every(a => v.amenities.includes(a));
+                return matchesRegion && matchesAmenities;
+            });
+
+            document.getElementById('catalog-count-label').innerText = `Showing ${filtered.length} verified properties`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 bg-white rounded-3xl border border-slate-200/80 p-8">
+                        <i class="fa-solid fa-house-circle-xmark text-4xl text-slate-300 mb-3"></i>
+                        <h4 class="font-bold text-slate-700 text-base">No villas match your filters</h4>
+                        <p class="text-xs text-slate-500 mt-1">Try resetting parish or amenity filters.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(villa => {
+                const displayRate = currentCurrency === 'USD' 
+                    ? `$${villa.rateUSD.toLocaleString()} USD` 
+                    : `$${villa.rateJMD.toLocaleString()} JMD`;
+
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between group";
+                
+                card.innerHTML = `
+                    <div>
+                        <!-- Main Card Image Thumbnail -->
+                        <div class="relative h-56 bg-slate-100 overflow-hidden cursor-pointer" onclick="openGalleryModal('${villa.id}')">
+                            <img src="${villa.images[0]}" alt="${villa.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full">
+                                ${villa.region}
+                            </span>
+                            <span class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-slate-800 text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+                                <i class="fa-solid fa-images text-jamaica-emerald"></i> ${villa.images.length} Photos
+                            </span>
+                        </div>
+
+                        <!-- Details Section -->
+                        <div class="p-5">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[11px] font-bold text-jamaica-gold uppercase tracking-wider">${villa.tag}</span>
+                                <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+                                    <span><i class="fa-solid fa-user-group text-slate-400"></i> ${villa.capacity}</span>
+                                    <span>•</span>
+                                    <span><i class="fa-solid fa-bed text-slate-400"></i> ${villa.bedrooms} Beds</span>
+                                </div>
+                            </div>
+
+                            <h3 class="font-heading font-bold text-slate-900 text-lg group-hover:text-jamaica-emerald transition mb-2">${villa.name}</h3>
+
+                            <!-- Amenity Badges -->
+                            <div class="flex flex-wrap gap-1.5 mb-4">
+                                ${villa.amenities.includes('pool') ? '<span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md"><i class="fa-solid fa-water-ladder text-jamaica-emerald"></i> Pool</span>' : ''}
+                                ${villa.amenities.includes('ocean') ? '<span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md"><i class="fa-solid fa-water text-blue-500"></i> Ocean View</span>' : ''}
+                                ${villa.amenities.includes('chef') ? '<span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md"><i class="fa-solid fa-utensils text-jamaica-gold"></i> Chef</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Footer / Action -->
+                    <div class="px-5 pb-5 pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-slate-400 block font-medium">Nightly Rate</span>
+                            <span class="font-bold text-slate-900 text-base">${displayRate}</span>
+                        </div>
+                        <button onclick="openBookingModal('${villa.id}')" class="px-4 py-2 rounded-xl bg-jamaica-emerald hover:bg-emerald-800 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-brands fa-whatsapp text-sm text-emerald-300"></i>
+                            <span>Book Direct</span>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Gallery Modal Logic
+        function openGalleryModal(villaId) {
+            const villa = villaData.find(v => v.id === villaId);
+            if (!villa) return;
+
+            activeGalleryImages = villa.images;
+            activeGalleryIndex = 0;
+
+            document.getElementById('gallery-title').innerText = villa.name;
+            document.getElementById('gallery-location').innerText = `${villa.region}, Jamaica`;
+
+            updateGalleryDisplay();
+
+            // Render Thumbnails
+            const thumbContainer = document.getElementById('gallery-thumbnails');
+            thumbContainer.innerHTML = '';
+            activeGalleryImages.forEach((img, idx) => {
+                const thumb = document.createElement('img');
+                thumb.src = img;
+                thumb.className = `w-16 h-12 rounded-lg object-cover cursor-pointer border-2 transition ${idx === 0 ? 'border-jamaica-emerald scale-105' : 'border-transparent opacity-70 hover:opacity-100'}`;
+                thumb.onclick = () => {
+                    activeGalleryIndex = idx;
+                    updateGalleryDisplay();
+                };
+                thumbContainer.appendChild(thumb);
+            });
+
+            document.getElementById('gallery-modal').classList.remove('hidden');
+        }
+
+        function updateGalleryDisplay() {
+            document.getElementById('gallery-active-img').src = activeGalleryImages[activeGalleryIndex];
+            document.getElementById('gallery-counter').innerText = `${activeGalleryIndex + 1} / ${activeGalleryImages.length}`;
+            
+            // Update Thumbnail Highlights
+            const thumbs = document.querySelectorAll('#gallery-thumbnails img');
+            thumbs.forEach((t, i) => {
+                t.className = `w-16 h-12 rounded-lg object-cover cursor-pointer border-2 transition ${i === activeGalleryIndex ? 'border-jamaica-emerald scale-105' : 'border-transparent opacity-70 hover:opacity-100'}`;
+            });
+        }
+
+        function prevGalleryImage() {
+            activeGalleryIndex = (activeGalleryIndex - 1 + activeGalleryImages.length) % activeGalleryImages.length;
+            updateGalleryDisplay();
+        }
+
+        function nextGalleryImage() {
+            activeGalleryIndex = (activeGalleryIndex + 1) % activeGalleryImages.length;
+            updateGalleryDisplay();
+        }
+
+        function closeGalleryModal() {
+            document.getElementById('gallery-modal').classList.add('hidden');
+        }
+
+        // Booking Modal Logic
+        function openBookingModal(villaId) {
+            selectedVillaForBooking = villaData.find(v => v.id === villaId);
+            if (!selectedVillaForBooking) return;
+
+            document.getElementById('booking-modal-title').innerText = selectedVillaForBooking.name;
+            document.getElementById('booking-villa-name').innerText = selectedVillaForBooking.name;
+            document.getElementById('booking-thumb').src = selectedVillaForBooking.images[0];
+
+            const rateStr = currentCurrency === 'USD' 
+                ? `$${selectedVillaForBooking.rateUSD} USD / night` 
+                : `$${selectedVillaForBooking.rateJMD.toLocaleString()} JMD / night`;
+            document.getElementById('booking-villa-rate').innerText = rateStr;
+
+            // Set Default Dates (Tomorrow to 3 days later)
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const checkOut = new Date();
+            checkOut.setDate(checkOut.getDate() + 4);
+
+            document.getElementById('book-checkin').value = tomorrow.toISOString().split('T')[0];
+            document.getElementById('book-checkout').value = checkOut.toISOString().split('T')[0];
+
+            calculateBookingTotal();
+            document.getElementById('booking-modal').classList.remove('hidden');
+        }
+
+        function calculateBookingTotal() {
+            if (!selectedVillaForBooking) return;
+
+            const checkInVal = new Date(document.getElementById('book-checkin').value);
+            const checkOutVal = new Date(document.getElementById('book-checkout').value);
+
+            let nightCount = Math.ceil((checkOutVal - checkInVal) / (1000 * 60 * 60 * 24));
+            if (isNaN(nightCount) || nightCount < 1) nightCount = 1;
+
+            const baseRate = currentCurrency === 'USD' ? selectedVillaForBooking.rateUSD : selectedVillaForBooking.rateJMD;
+            const cleaningFee = currentCurrency === 'USD' ? 40 : 6000;
+
+            const subtotal = baseRate * nightCount;
+            const total = subtotal + cleaningFee;
+
+            document.getElementById('calc-nights-label').innerText = `${nightCount} Night(s) Stay`;
+            document.getElementById('calc-base-price').innerText = currentCurrency === 'USD' ? `$${subtotal} USD` : `$${subtotal.toLocaleString()} JMD`;
+            document.getElementById('calc-cleaning-fee').innerText = currentCurrency === 'USD' ? `$${cleaningFee} USD` : `$${cleaningFee.toLocaleString()} JMD`;
+            document.getElementById('calc-total-price').innerText = currentCurrency === 'USD' ? `$${total} USD` : `$${total.toLocaleString()} JMD`;
+        }
+
+        function confirmBookingWhatsApp() {
+            if (!selectedVillaForBooking) return;
+
+            const checkIn = document.getElementById('book-checkin').value;
+            const checkOut = document.getElementById('book-checkout').value;
+            const guests = document.getElementById('book-guests').value;
+            const totalStr = document.getElementById('calc-total-price').innerText;
+
+            const message = encodeURIComponent(
+                `Hello! I found your villa "${selectedVillaForBooking.name}" on IslandStays Jamaica.\n\n` +
+                `Reservation Inquiry:\n` +
+                `• Check-In: ${checkIn}\n` +
+                `• Check-Out: ${checkOut}\n` +
+                `• Guests: ${guests}\n` +
+                `• Estimated Total: ${totalStr}\n\n` +
+                `Is this villa available for these dates?`
+            );
+
+            window.open(`https://wa.me/${selectedVillaForBooking.hostPhone}?text=${message}`, '_blank');
+        }
+
+        function closeBookingModal() {
+            document.getElementById('booking-modal').classList.add('hidden');
+        }
+
+        // Host Modal Logic & Plan Selection
+        function openHostModal() {
+            document.getElementById('host-modal').classList.remove('hidden');
+        }
+
+        function closeHostModal() {
+            document.getElementById('host-modal').classList.add('hidden');
+        }
+
+        function selectHostTier(tierKey) {
+            // Reset styles
+            document.querySelectorAll('.tier-card').forEach(card => {
+                card.className = "tier-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer hover:border-jamaica-emerald transition bg-slate-50 relative";
+            });
+
+            if (tierKey === 'commission') {
+                selectedHostTierPlan = 'Performance (8% Commission)';
+                document.getElementById('tier-card-commission').className = "tier-card border-2 border-jamaica-emerald bg-jamaica-mint/30 rounded-2xl p-4 cursor-pointer transition relative";
+            } else if (tierKey === 'subscription') {
+                selectedHostTierPlan = 'Flat Rate (J$7,500/mo)';
+                document.getElementById('tier-card-subscription').className = "tier-card border-2 border-jamaica-emerald bg-jamaica-mint/30 rounded-2xl p-4 cursor-pointer transition relative";
+            } else if (tierKey === 'lead') {
+                selectedHostTierPlan = 'Lead Generator (J$12,000/mo)';
+                document.getElementById('tier-card-lead').className = "tier-card border-2 border-jamaica-emerald bg-jamaica-mint/30 rounded-2xl p-4 cursor-pointer transition relative";
+            }
+        }
+
+        function submitHostForm() {
+            const hostName = document.getElementById('host-name-input').value.trim();
+            const hostPhone = document.getElementById('host-phone-input').value.trim();
+            const villaName = document.getElementById('host-villa-input').value.trim();
+            const location = document.getElementById('host-location-input').value;
+            const photoLink = document.getElementById('host-photos-input').value.trim();
+
+            if (!hostName || !hostPhone || !villaName) {
+                alert('Please fill in your name, phone number, and villa name.');
+                return;
+            }
+
+            const platformDispatchPhone = '18765550100'; // Platform Onboarding Admin WhatsApp
+            const message = encodeURIComponent(
+                `Hello IslandStays Onboarding Team!\n\n` +
+                `I would like to list my property on IslandStays Jamaica:\n` +
+                `• Host Name: ${hostName}\n` +
+                `• Villa Name: ${villaName}\n` +
+                `• Parish: ${location}\n` +
+                `• Selected Plan Tier: ${selectedHostTierPlan}\n` +
+                `• WhatsApp Phone: ${hostPhone}\n` +
+                `• Photos Link: ${photoLink || 'Will send via chat'}\n\n` +
+                `Please send me instructions to complete listing setup!`
+            );
+
+            window.open(`https://wa.me/${platformDispatchPhone}?text=${message}`, '_blank');
+            closeHostModal();
+        }
+
+        // Initialize App on Window Load
+        window.onload = function() {
+            renderMarketplace();
+        };
+    </script>
+</body>
+</html>
+```
