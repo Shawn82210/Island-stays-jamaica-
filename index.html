@@ -416,11 +416,22 @@
                         </div>
                     </div>
 
-                    <!-- STEP 3: Villa Photos Input -->
+                    <!-- STEP 3: Direct File Upload Input for Villa Photos -->
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Photo Image Link(s) / Google Drive / Airbnb Link</label>
-                        <input type="text" id="host-photos-input" placeholder="Paste link to photos or Airbnb listing..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-medium focus:ring-2 focus:ring-jamaica-emerald focus:outline-none">
-                        <p class="text-[11px] text-slate-400 mt-1">Our onboarding team will format your photos for high scannability.</p>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Upload Villa Photos (Select from Device)</label>
+                        <div class="relative border-2 border-dashed border-slate-200 hover:border-jamaica-emerald rounded-2xl p-4 bg-slate-50 transition text-center group cursor-pointer" onclick="document.getElementById('host-photos-file-input').click()">
+                            <input type="file" id="host-photos-file-input" multiple accept="image/*" onchange="handleHostImageUpload(event)" class="hidden">
+                            <div id="upload-prompt" class="space-y-1">
+                                <div class="w-10 h-10 rounded-full bg-jamaica-mint text-jamaica-emerald flex items-center justify-center mx-auto text-base group-hover:scale-110 transition">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                </div>
+                                <p class="text-xs font-bold text-slate-700">Tap to select photos from your device</p>
+                                <p class="text-[11px] text-slate-400">JPG, PNG, or WEBP (Upload multiple photos)</p>
+                            </div>
+                            <!-- Image Thumbnails Preview Container -->
+                            <div id="host-image-previews" class="hidden grid grid-cols-4 gap-2 mt-2"></div>
+                        </div>
+                        <p id="upload-status-text" class="text-[11px] text-slate-400 mt-1">Select 1 to 5 high-quality photos of your villa.</p>
                     </div>
                 </div>
 
@@ -534,6 +545,7 @@
         let activeGalleryIndex = 0;
         let selectedVillaForBooking = null;
         let selectedHostTierPlan = 'Flat Rate (J$7,500/mo)';
+        let uploadedHostPhotoFiles = [];
 
         // Toggle Currency Function
         function toggleCurrency() {
@@ -791,6 +803,35 @@
             document.getElementById('host-modal').classList.add('hidden');
         }
 
+        // Direct File Upload Preview Handler
+        function handleHostImageUpload(event) {
+            const files = Array.from(event.target.files);
+            if (!files.length) return;
+
+            uploadedHostPhotoFiles = files;
+            const previewContainer = document.getElementById('host-image-previews');
+            const prompt = document.getElementById('upload-prompt');
+            const statusText = document.getElementById('upload-status-text');
+
+            previewContainer.innerHTML = '';
+            previewContainer.classList.remove('hidden');
+            prompt.classList.add('hidden');
+
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'w-full h-16 object-cover rounded-lg border border-slate-200 shadow-sm';
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+
+            statusText.innerText = `${files.length} photo(s) selected from your device. Tap above to change.`;
+            statusText.className = 'text-[11px] text-jamaica-emerald font-semibold mt-1';
+        }
+
         function selectHostTier(tierKey) {
             // Reset styles
             document.querySelectorAll('.tier-card').forEach(card => {
@@ -814,12 +855,16 @@
             const hostPhone = document.getElementById('host-phone-input').value.trim();
             const villaName = document.getElementById('host-villa-input').value.trim();
             const location = document.getElementById('host-location-input').value;
-            const photoLink = document.getElementById('host-photos-input').value.trim();
 
             if (!hostName || !hostPhone || !villaName) {
                 alert('Please fill in your name, phone number, and villa name.');
                 return;
             }
+
+            const photoCount = uploadedHostPhotoFiles.length;
+            const photoSummary = photoCount > 0 
+                ? `${photoCount} image file(s) attached ready to send` 
+                : 'Will attach photos in chat';
 
             const platformDispatchPhone = '18765550100'; // Platform Onboarding Admin WhatsApp
             const message = encodeURIComponent(
@@ -830,7 +875,7 @@
                 `• Parish: ${location}\n` +
                 `• Selected Plan Tier: ${selectedHostTierPlan}\n` +
                 `• WhatsApp Phone: ${hostPhone}\n` +
-                `• Photos Link: ${photoLink || 'Will send via chat'}\n\n` +
+                `• Photos Status: ${photoSummary}\n\n` +
                 `Please send me instructions to complete listing setup!`
             );
 
